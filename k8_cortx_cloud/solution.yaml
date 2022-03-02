@@ -11,29 +11,28 @@ solution:
       csm_auth_admin_secret: seagate2
       csm_mgmt_admin_secret: Cortxadmin@123
   images:
-    cortxcontrol: cortx-docker.colo.seagate.com/seagate/cortx-all:2.0.0-2153-custom-ci
-    cortxdata: cortx-docker.colo.seagate.com/seagate/cortx-all:2.0.0-2153-custom-ci
-    cortxserver: cortx-docker.colo.seagate.com/seagate/cortx-rgw:2.0.0-103-custom-ci
-    cortxha: cortx-docker.colo.seagate.com/seagate/cortx-all:2.0.0-2153-custom-ci
-    cortxclient: cortx-docker.colo.seagate.com/seagate/cortx-all:2.0.0-2153-custom-ci
     openldap: ghcr.io/seagate/symas-openldap:2.4.58
     consul: ghcr.io/seagate/consul:1.10.0
     kafka: ghcr.io/seagate/kafka:3.0.0-debian-10-r7
     zookeeper: ghcr.io/seagate/zookeeper:3.7.0-debian-10-r182
     rancher: ghcr.io/seagate/local-path-provisioner:v0.0.20
     busybox: ghcr.io/seagate/busybox:latest
+    cortxcontrol: cortx-docker.colo.seagate.com/seagate/cortx-all:2.0.0-5068-custom-ci
+    cortxdata: cortx-docker.colo.seagate.com/seagate/cortx-all:2.0.0-5068-custom-ci
+    cortxserver: cortx-docker.colo.seagate.com/seagate/cortx-rgw:2.0.0-5068-custom-ci
+    cortxha: cortx-docker.colo.seagate.com/seagate/cortx-all:2.0.0-5068-custom-ci
+    cortxclient: cortx-docker.colo.seagate.com/seagate/cortx-all:2.0.0-5068-custom-ci
   common:
-    setup_size: large
     storage_provisioner_path: /mnt/fs-local-volume
+    setup_size: small
     container_path:
       local: /etc/cortx
       shared: /share
       log: /etc/cortx/log
     s3:
       default_iam_users:
-        auth_admin: "sgiamadmin"
-        auth_user: "user_name"
-        #auth_secret defined above in solution.secrets.content.s3_auth_admin_secret
+        auth_admin: sgiamadmin
+        auth_user: user_name
       num_inst: 2
       start_port_num: 28051
       max_start_timeout: 240
@@ -50,7 +49,7 @@ solution:
         sns: 1+0+0
         dix: 1+0+0
     external_services:
-      type: LoadBalancer
+      type: NodePort
     resource_allocation:
       consul:
         server:
@@ -104,65 +103,13 @@ solution:
       type: ios
       devices:
         metadata:
-          device: /dev/sdc
-          size: 5Gi
+          device: /dev/sdb
+          size: 10Gi
         data:
           d1:
-            device: /dev/sdd
-            size: 5Gi
-          d2:
-            device: /dev/sde
-            size: 5Gi
-          d3:
-            device: /dev/sdf
-            size: 5Gi
-          d4:
-            device: /dev/sdg
-            size: 5Gi
-          d5:
-            device: /dev/sdh
-            size: 5Gi
-          d6:
-            device: /dev/sdi
-            size: 5Gi
-          d7:
-            device: /dev/sdj
-            size: 5Gi
-    cvg2:
-      name: cvg-02
-      type: ios
-      devices:
-        metadata:
-          device: /dev/sdk
-          size: 5Gi
-        data:
-          d1:
-            device: /dev/sdl
-            size: 5Gi
-          d2:
-            device: /dev/sdm
-            size: 5Gi
-          d3:
-            device: /dev/sdn
-            size: 5Gi
-          d4:
-            device: /dev/sdo
-            size: 5Gi
-          d5:
-            device: /dev/sdp
-            size: 5Gi
-          d6:
-            device: /dev/sdq
-            size: 5Gi
-          d7:
-            device: /dev/sdr
-            size: 5Gi
+            device: /dev/sdc
+            size: 10Gi
+
   nodes:
     node1:
-      name: node-1
-    node2:
-      name: node-2
-    node3:
-      name: node-3
-    node4:
-      name: node-4
+        name: cortx-ova-k8s.colo.seagate.com
